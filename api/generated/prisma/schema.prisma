@@ -1,0 +1,52 @@
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  username     String
+  avatar       String?
+  refreshToken String?
+  passwordHash String
+  role         Role       @default(USER)
+  scenarios    Scenario[]
+}
+
+model Scenario {
+  id        String          @id @default(uuid())
+  name      String
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  moodBoard MoodBoardItem[]
+  notes     String?
+  story     String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  status    ScenarioStatus  @default(DRAFT)
+}
+
+model MoodBoardItem {
+  id         String   @id @default(uuid())
+  url        String
+  scenarioId String
+  scenario   Scenario @relation(fields: [scenarioId], references: [id])
+}
+
+enum ScenarioStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
