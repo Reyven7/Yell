@@ -1,14 +1,13 @@
 import { MoreVertical, Upload } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { NavLink } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Link } from "@tanstack/react-router";
 
 const tabs = [
-  { name: "Story", href: "/story" },
-  { name: "Notes", href: "/notes" },
-  { name: "Moodboard", href: "/moodboard" },
+  { name: "Story", href: "/scenario/story" },
+  { name: "Notes", href: "/scenario/notes" },
+  { name: "Moodboard", href: "/scenario/moodboard" },
 ];
 
 const ScenarioHeader = () => {
@@ -23,21 +22,9 @@ const ScenarioHeader = () => {
         </div>
         <div className="flex-1 flex justify-center gap-4">
           {tabs.map((tab) => (
-            <NavLink
-              key={tab.name}
-              to={tab.href}
-              end
-              className={({ isActive }: { isActive: boolean }) =>
-                cn(
-                  "py-5 text-base font-normal transition-colors border-b-2",
-                  isActive
-                    ? "border-primary text-primary font-semibold"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
-                )
-              }
-            >
+            <Link key={tab.name} to={tab.href}>
               {tab.name}
-            </NavLink>
+            </Link>
           ))}
         </div>
 

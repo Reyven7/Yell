@@ -1,4 +1,4 @@
-import { RegisterInput } from "@src/schemas/auth.schema";
+import { RegisterInput } from "@src/schemes/auth.schema";
 import { Prisma, PrismaClient } from "../../generated/prisma/client";
 import argon2 from "argon2";
 import { AppError } from "@src/libs/classes/app-error.class";

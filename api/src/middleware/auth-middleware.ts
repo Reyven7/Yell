@@ -4,7 +4,7 @@ import { AppError } from "@src/libs/classes/app-error.class";
 import jwt from "jsonwebtoken";
 import { getUserById } from "@src/services/user.service";
 import { userPublicSelect } from "@src/models/user.selects";
-import { findScenario } from "@src/services/scenario.service";
+import { findScenarios } from "@src/services/scenario.service";
 
 export const authMiddleware = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -61,7 +61,7 @@ export const refreshMiddleware = asyncHandler(
 export const ownerMiddleware = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const scenarios = await findScenario(req.body.id, { userId: true });
+      const scenarios = await findScenarios(req.params.id, { userId: true });
 
       if (!scenarios) {
         throw new AppError("Scenario not found!", 404);

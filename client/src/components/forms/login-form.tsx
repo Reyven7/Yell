@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLoginMutation } from "@/app/api/authApi";
 import { useForm } from "react-hook-form";
 import { LoginInput, loginSchema } from "@/lib/validations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "@tanstack/react-router";
 
 const LoginForm = ({
   className,
@@ -29,17 +29,19 @@ const LoginForm = ({
   });
 
   const navigate = useNavigate();
-  const [useLogin] = useLoginMutation();
+  const { loginAsync } = useAuth();
 
   const handleLogin = async (formData: LoginInput) => {
     try {
-      const { accessToken, refreshToken } = await useLogin(formData).unwrap();
+      const { accessToken, refreshToken } = await loginAsync(formData);
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
+      navigate({ to: "/" });
+
       if (accessToken && refreshToken) {
         toast("Successful login");
-        navigate("/");
       }
     } catch (e) {
       toast("Login failed");

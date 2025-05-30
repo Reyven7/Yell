@@ -23,14 +23,18 @@ export const handleListScenarioNames = asyncHandler(
 
 export const handleDeleteScenario = asyncHandler(
   async (req: Request, res: Response) => {
-    await deleteScenario(req.body.id);
+    await deleteScenario(req.params.id);
     res.status(200).json({ message: "success deleted" });
   }
 );
 
 export const handleUpdateScenarioName = asyncHandler(
   async (req: Request, res: Response) => {
-    await updateScenarioName(req.body.id, req.body.name);
+    await updateScenarioName(req.params.id, req.body.name);
     res.status(200).json({ message: "success updated" });
   }
+);
+
+export const fetchScenarioById = asyncHandler(
+  async (req: Request, res: Response) => {}
 );

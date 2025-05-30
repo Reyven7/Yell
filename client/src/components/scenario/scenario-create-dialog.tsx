@@ -13,12 +13,19 @@ import { DiamondPlus } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { SidebarMenuButton } from "../ui/sidebar";
-import { useCreateScenarioMutation } from "@/app/api/scenarioApi";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createScenarioMutationOptions } from "@/app/mutationOptions/scenarioMutationOptions";
 
 const ScenarioCreateDialog = () => {
-  const [createScenario, { isLoading, isError }] = useCreateScenarioMutation();
+  const queryClirnt = useQueryClient();
+  const {
+    mutateAsync: create,
+    isPending,
+    isError,
+  } = useMutation(createScenarioMutationOptions(queryClirnt));
+  
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -26,7 +33,7 @@ const ScenarioCreateDialog = () => {
     if (!name.trim()) return;
 
     try {
-      await createScenario({ name: name }).unwrap();
+      await create(name);
       setName("");
       setOpen(false);
     } catch (err) {
@@ -70,8 +77,8 @@ const ScenarioCreateDialog = () => {
               Close
             </Button>
           </DialogClose>
-          <Button onClick={handleScenarioCreate} disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create"}
+          <Button onClick={handleScenarioCreate} disabled={isPending}>
+            {isPending ? "Creating..." : "Create"}
           </Button>
         </DialogFooter>
       </DialogContent>

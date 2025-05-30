@@ -23,23 +23,22 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useLogoutMutation } from "@/app/api/authApi";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuthStore } from "@/app/stores/auth-store";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const [logout] = useLogoutMutation();
-  const { signOut, user } = useAuth();
+  // const [logout] = ();
+  const { user } = useAuthStore();
 
-  const handleLogout = async () => {
-    try {
-      await logout().unwrap();
-      signOut();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+  // const handleLogout = async () => {
+  //   try {
+  //     await logout().unwrap();
+  //     signOut();
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  console.log(user)
   if (!user) return null;
 
   return (
@@ -109,7 +108,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="text-red-500">
+            <DropdownMenuItem className="text-red-500">
               <LogOut className="text-red-500" />
               Log out
             </DropdownMenuItem>

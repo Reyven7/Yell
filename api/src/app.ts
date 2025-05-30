@@ -14,8 +14,8 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.use("/auth", authRoutes());
-app.use("/scenario", scenarioRoutes());
+app.use("/api/auth", authRoutes());
+app.use("/api/scenario", scenarioRoutes());
 
 app.use(errorHandler);
 

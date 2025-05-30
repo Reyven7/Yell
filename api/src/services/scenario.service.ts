@@ -11,7 +11,20 @@ export const findUserScenarios = async (id: string) => {
   return scenarios;
 };
 
-export const findScenario = async (
+export const getScenarioById = async (
+  id: string,
+  select?: Prisma.ScenarioSelect
+) => {
+  const scenario = await prisma.scenario.findUnique({
+    where: { id },
+    select,
+  });
+  if (!scenario) throw new AppError("Not found scenario", 404);
+
+  return scenario;
+};
+
+export const findScenarios = async (
   id: string,
   select?: Prisma.ScenarioSelect
 ) => {

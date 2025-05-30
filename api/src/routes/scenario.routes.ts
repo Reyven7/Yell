@@ -1,3 +1,4 @@
+import { fetchMoodboar } from "@src/controllers/moodboard.controller";
 import {
   handleCreateScenario,
   handleDeleteScenario,
@@ -13,7 +14,7 @@ import {
   scenarioNamingSchema,
   deleteScenarioSchema,
   createScenarioSchema,
-} from "@src/schemas/scenario.schema";
+} from "@src/schemes/scenario.schema";
 import { Router } from "express";
 
 export const scenarioRoutes = () => {
@@ -27,7 +28,7 @@ export const scenarioRoutes = () => {
   );
   router.get("/", authMiddleware, handleListScenarioNames);
   router.delete(
-    "/",
+    "/:id",
     authMiddleware,
     validate(deleteScenarioSchema),
     ownerMiddleware,
@@ -35,12 +36,14 @@ export const scenarioRoutes = () => {
   );
 
   router.put(
-    "/rename",
+    "/rename/:id",
     authMiddleware,
     validate(scenarioNamingSchema),
     ownerMiddleware,
     handleUpdateScenarioName
   );
+
+  router.get("/:id/moodboard", authMiddleware, ownerMiddleware, fetchMoodboar);
 
   return router;
 };

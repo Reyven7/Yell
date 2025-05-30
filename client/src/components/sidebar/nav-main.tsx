@@ -14,10 +14,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
-import {
-  useDeleteScenarioMutation,
-  useUpdateScenarioNameMutation,
-} from "@/app/api/scenarioApi";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,17 +28,27 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { Input } from "../ui/input";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  deleteScenarioMutationOptions,
+  updateScenarioNameMutationOptions,
+} from "@/app/mutationOptions/scenarioMutationOptions";
 
 const NavMain = ({ scenarios }: { scenarios: ScenarioItem[] }) => {
-  const [useDelete] = useDeleteScenarioMutation();
-  const [useRename] = useUpdateScenarioNameMutation();
+  const queryClient = useQueryClient();
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newName, setNewName] = useState<string>("");
+  const { mutateAsync: rename } = useMutation(
+    updateScenarioNameMutationOptions(queryClient)
+  );
+  const { mutateAsync: deleteScenario } = useMutation(
+    deleteScenarioMutationOptions(queryClient)
+  );
 
   const handleDelete = async (id: string) => {
     try {
-      await useDelete({ id });
+      await deleteScenario(id);
     } catch (err) {
       console.error("Delete scenario error:", err);
     }
@@ -49,10 +56,7 @@ const NavMain = ({ scenarios }: { scenarios: ScenarioItem[] }) => {
 
   const handleRename = async (id: string, name: string) => {
     try {
-      await useRename({
-        id,
-        name: name,
-      });
+      await rename({ id, name });
       setEditingId(null);
     } catch (err) {
       console.error("Rename scenario error:", err);

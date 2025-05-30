@@ -7,14 +7,16 @@ export const createScenarioSchema = {
 };
 
 export const scenarioNamingSchema = {
-  body: zod.object({
+  params: zod.object({
     id: zod.string().min(1),
+  }),
+  bofy: zod.object({
     name: zod.string().min(1),
   }),
 };
 
 export const deleteScenarioSchema = {
-  body: zod.object({
+  params: zod.object({
     id: zod.string().min(1),
   }),
 };

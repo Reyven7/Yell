@@ -10,7 +10,7 @@ import {
   refreshMiddleware,
 } from "@src/middleware/auth-middleware";
 import { validate } from "@src/middleware/validate";
-import { loginSchema, registerSchema } from "@src/schemas/auth.schema";
+import { loginSchema, registerSchema } from "@src/schemes/auth.schema";
 import { Router } from "express";
 
 export const authRoutes = () => {

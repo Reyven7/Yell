@@ -1,22 +1,14 @@
-import { User } from "@/types/user.types";
-import { useAppDispatch, useAppSelector } from "./hooks";
-import { clearUser, setUser } from "@/app/features/auth/authSlice";
-import { authApi } from "@/app/api/authApi";
+import { login } from "@/app/api/auth-api";
+import { LoginCredential } from "@/types/auth.types";
+import { useMutation } from "@tanstack/react-query";
 
 export const useAuth = () => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
+  const loginMutation = useMutation({
+    mutationFn: (credentials: LoginCredential) => login(credentials),
+  });
 
-  const saveUser = (user: User) => {
-    dispatch(setUser(user));
+  return {
+    loginAsync: loginMutation.mutateAsync,
+    ...loginMutation,
   };
-
-  const signOut = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    dispatch(clearUser());
-    dispatch(authApi.util.resetApiState());
-  };
-
-  return { user, saveUser, signOut, isAuthenticated: !!user };
 };
